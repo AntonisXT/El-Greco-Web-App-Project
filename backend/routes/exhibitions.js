@@ -2,71 +2,71 @@ const express = require('express');
 const router = express.Router();
 const Exhibition = require('../models/exhibition');
 const auth = require('../middleware/auth');
+const validate = require('../server/middleware/validate');
+const { pagination, objectId, idParam } = require('../server/validation/schemas');
+const paginate = require('../server/utils/paginate');
 
-// GET all exhibitions
-router.get('/', async (req, res) => {
-  try {
-    const exhibitions = await Exhibition.find();
-    res.json(exhibitions);
-  } catch (err) {
-    console.error('Error fetching exhibitions:', err);
-    res.status(500).json({ msg: 'Server Error', error: err.message });
+/**
+ * GET /
+ * List exhibitions (optionally filtered by subcategory).
+ * Supports pagination and sorting.
+ */
+router.get(
+  '/',
+  validate({ query: pagination.keys({ subcategory: objectId.optional() }) }),
+  async (req, res) => {
+    try {
+      const filter = {};
+      if (req.query.subcategory) filter.subcategory = req.query.subcategory;
+      const q = Exhibition.find(filter);
+      const result = await paginate(q, {
+        page: req.query.page,
+        limit: req.query.limit,
+        sort: { createdAt: -1 },
+      });
+      res.json(result);
+    } catch (e) {
+      res.status(500).json({ msg: e.message });
+    }
   }
-});
+);
 
-// POST a new exhibition (protected route)
+/**
+ * POST /
+ * Create a new exhibition (admin only).
+ */
 router.post('/', auth, async (req, res) => {
-  const { title, date, location, category } = req.body;
-
-  if (!title || !date || !location || !category) {
-    return res.status(400).json({ msg: 'Please include all fields' });
-  }
-
   try {
-    const newExhibition = new Exhibition({
-      title,
-      date,
-      location,
-      category
-    });
-    const exhibition = await newExhibition.save();
-    res.json(exhibition);
-  } catch (err) {
-    console.error('Error creating exhibition:', err);
-    res.status(500).json({ msg: 'Server Error', error: err.message });
+    const created = await Exhibition.create(req.body);
+    res.status(201).json(created);
+  } catch (e) {
+    res.status(400).json({ msg: e.message });
   }
 });
 
-// PUT update exhibition (protected route)
-router.put('/:id', auth, async (req, res) => {
+/**
+ * PUT /:id
+ * Update exhibition details by ID.
+ */
+router.put('/:id', auth, validate({ params: idParam }), async (req, res) => {
   try {
-    const exhibition = await Exhibition.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    if (!exhibition) {
-      return res.status(404).json({ msg: 'Exhibition not found' });
-    }
-    res.json(exhibition);
-  } catch (err) {
-    console.error('Error updating exhibition:', err);
-    res.status(500).json({ msg: 'Server Error', error: err.message });
+    const updated = await Exhibition.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(updated);
+  } catch (e) {
+    res.status(400).json({ msg: e.message });
   }
 });
 
-// DELETE exhibition (protected route)
-router.delete('/:id', auth, async (req, res) => {
+/**
+ * DELETE /:id
+ * Delete exhibition by ID.
+ */
+router.delete('/:id', auth, validate({ params: idParam }), async (req, res) => {
   try {
-    const exhibition = await Exhibition.findById(req.params.id);
-    if (!exhibition) {
-      return res.status(404).json({ msg: 'Exhibition not found' });
-    }
     await Exhibition.findByIdAndDelete(req.params.id);
-    res.json({ msg: 'Exhibition removed' });
-  } catch (err) {
-    console.error('Error deleting exhibition:', err);
-    res.status(500).json({ msg: 'Server Error', error: err.message });
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(400).json({ msg: e.message });
   }
 });
 
