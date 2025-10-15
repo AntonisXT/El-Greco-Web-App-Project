@@ -1,9 +1,11 @@
+/* Reset essentials */
 body, h1, p, ul, li, a {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Base typography & page background */
 body {
   font-family: "Georgia", serif;
   line-height: 1.6;
@@ -12,7 +14,7 @@ body {
   min-height: 100vh;
 }
 
-/* Grid Layout */
+/* ===== Core Layout (Grid) ===== */
 .grid-container {
   display: grid;
   grid-template-areas:
@@ -24,6 +26,7 @@ body {
   min-height: 100vh;
 }
 
+/* Header: dark background with gold accent border */
 header {
   grid-area: header;
   background: #4b3e27;
@@ -33,6 +36,7 @@ header {
   border-bottom: 5px solid #e09f3e;
 }
 
+/* Top navigation bar */
 nav {
   grid-area: nav;
   background: #6a4e36;
@@ -56,12 +60,14 @@ nav a:hover {
   color: #e09f3e;
 }
 
+/* Main area split: sidebar + content */
 .main-container {
   grid-area: main;
   display: grid;
   grid-template-columns: 300px 1fr;
 }
 
+/* Sidebar panel */
 aside {
   background: #d9cab3;
   padding: 1.5rem;
@@ -73,6 +79,7 @@ aside h2 {
   margin-bottom: 1rem;
 }
 
+/* Sidebar links */
 aside ul li a {
   color: #6a4e36;
   text-decoration: none;
@@ -82,12 +89,7 @@ aside ul li a:hover {
   color: #e09f3e;
 }
 
-main {
-  background-color: #ffffff;
-  padding: 1.5rem;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-}
-
+/* Footer: mirrors header styling */
 footer {
   grid-area: footer;
   background: #4b3e27;
@@ -97,18 +99,18 @@ footer {
   border-top: 5px solid #e09f3e;
 }
 
-/* Hidden Elements */
+/* Utility: hide elements */
 .hidden {
   display: none;
 }
 
-/* Login Form Styles */
+/* ===== Login Form ===== */
 #loginFormContainer {
   margin: 0 auto;
   padding: 1em;
   border: 1px solid #4b3e27;
   border-radius: 5px;
-  background-color: #e6e0d4; /* Απαλό γκρι-μπεζ */
+  background-color: #e6e0d4; /* Soft beige-gray */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   max-width: 100%;
 }
@@ -130,6 +132,18 @@ footer {
   border-radius: 5px;
 }
 
+/* Login inputs sizing (both ids supported) */
+#loginForm input[type="text"],
+#loginForm input[type="password"],
+#login-form input[type="text"],
+#login-form input[type="password"]{
+  width: 100% !important;
+  height: 40px !important;
+  display: block;
+  box-sizing: border-box;
+}
+
+/* Login button */
 #loginForm button {
   background-color: #6a4e36;
   color: #fefae0;
@@ -141,12 +155,13 @@ footer {
   background-color: #4b3e27;
 }
 
+/* Logout button (standalone) */
 #logoutButton {
-  padding: 0.5em 1em;
-  background-color: #b23c17; /* Δραματικό κόκκινο */
+  padding: 0.2em 1.5em;
+  background-color: #b23c17; /* Deep red */
   color: #fefae0;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
 }
 
@@ -154,7 +169,7 @@ footer {
   background-color: #7f1d1d;
 }
 
-/* Responsive Design */
+/* ===== Responsive basics ===== */
 @media (max-width: 768px) {
   .main-container {
     flex-direction: column;
@@ -175,28 +190,7 @@ footer {
   }
 }
 
-.gallery {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  justify-content: center;
-  align-items: center;
-  padding: 16px;
-}
-
-.gallery img {
-  width: 200px;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-}
-
-.gallery img:hover {
-  transform: scale(1.05);
-}
-
-/* Βασικά στυλ για το body */
+/* ===== Secondary base (overrides for generic pages) ===== */
 body {
   font-family: 'Arial', sans-serif;
   background-color: #f7f7f7;
@@ -205,7 +199,7 @@ body {
   padding: 0;
 }
 
-/* Στυλ για τον τίτλο "Επιλογές Διαχειριστή" */
+/* Admin menu title */
 #managementMenu h2 {
   font-size: 1.8rem;
   color: #333;
@@ -215,7 +209,7 @@ body {
   text-align: center;
 }
 
-/* Στυλ για το κουμπί αποσύνδεσης */
+/* Generic logout button (component) */
 .logout-btn {
   padding: 10px 20px;
   background-color: #e74c3c;
@@ -232,37 +226,32 @@ body {
   background-color: #c0392b;
 }
 
-/* Στυλ για το μενού διαχείρισης */
+/* Admin menu visibility toggle */
 #managementMenu {
-  display: none; /* Κρυφό μέχρι να γίνει σύνδεση */
+  display: none; /* Hidden until authenticated */
 }
 
 #managementMenu.visible {
   display: block;
 }
 
-/* Κεντρικοποίηση και στυλ για το container των επιλογών διαχείρισης */
+/* ===== Admin: management options grid ===== */
 .management-options-container {
   display: grid;
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 26px;
   padding: 15px;
 }
 
-/* Στυλ για κάθε επιλογή */
+/* Clickable management tiles */
 .management-option {
   display: block;
   text-decoration: none;
   color: #333;
+  outline: none;
 }
 
-.management-card {
-  background-color: white;
-  padding: 5px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
+/* Card hover lift */
 .management-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -273,17 +262,15 @@ body {
   text-align: center;
 }
 
-/* Αλλαγή χρώματος για το hover effect */
-.management-option:hover .management-card {
-  background-color: #f9fafb;
-}
+/* NOTE: empty hover rule kept for compatibility */
+.management-option:hover 
 
-/* Στυλ για τις κάρτες */
+/* Card text color */
 .management-card h3, .management-card p {
   color: #333;
 }
 
-/* Φόρμες διαχείρισης */
+/* ===== Legacy admin forms (simple) ===== */
 .management-form {
   margin: 20px 0;
   padding: 20px;
@@ -321,7 +308,7 @@ body {
   background-color: #4b3e27;
 }
 
-/* Λίστα αντικειμένων */
+/* Generic item list + action buttons */
 .item {
   border: 1px solid #ddd;
   padding: 10px;
@@ -360,7 +347,7 @@ body {
   opacity: 0.8;
 }
 
-/* Προσθήκη στυλ για τις φόρμες */
+/* Forms for exhibitions & links */
 #exhibitionForm, #linkForm {
   background-color: #f8f5f0;
   padding: 20px;
@@ -403,7 +390,7 @@ body {
   background-color: #4b3e27;
 }
 
-/* Λίστες εκθέσεων και συνδέσμων */
+/* Public lists for exhibitions & links */
 #exhibitionsList, #linksList {
   margin-top: 20px;
 }
@@ -420,7 +407,7 @@ body {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Στυλ για τα κουμπιά διαχείρισης */
+/* Row of edit/delete buttons */
 .manage-buttons {
   display: flex;
   gap: 10px;
@@ -448,4 +435,836 @@ body {
 
 .edit-button:hover, .delete-button:hover {
   opacity: 0.8;
+}
+
+/* ===== Main content background polish ===== */
+main {
+  background: radial-gradient(ellipse at top left, rgba(255,255,255,0.95), rgba(248,248,248,0.95) 40%, rgba(242,242,242,0.95)),
+              repeating-linear-gradient(0deg, rgba(0,0,0,0.02) 0, rgba(0,0,0,0.02) 1px, transparent 1px, transparent 24px);
+  backdrop-filter: blur(1px);
+  border-radius: 16px;
+  padding: 1rem;
+}
+
+/* Generic card container */
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Compact form rows */
+.form-row {
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+  margin: .5rem 0;
+}
+
+/* Generic form controls */
+.form-row input, .form-row textarea, select {
+  width: 100%;
+  padding: .5rem .75rem;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font: inherit;
+  background: #fafafa;
+}
+
+/* Base buttons */
+.form-row button, button {
+  border: none;
+  border-radius: 10px;
+  padding: .5rem .9rem;
+  cursor: pointer;
+  background: #e09f3e;
+  color: #fff;
+}
+
+/* ===== Theme: warm parchment + amber accents ===== */
+:root{
+  --bg-main: #f8f4ec;
+  --card-bg: #fffdf8;
+  --ink: #2c2a25;
+  --muted: #6b665c;
+  --accent: #caa353; /* amber/gold */
+  --accent-hover: #b48c3f;
+  --border: #e8e1d5;
+  --shadow: 0 10px 20px rgba(0,0,0,.06);
+  --radius: 14px;
+}
+
+body{ background: var(--bg-main); color: var(--ink); }
+
+main, #content{
+  background: linear-gradient(180deg, rgba(255,255,255,.6), rgba(255,255,255,.3));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* Cards theme */
+.card{
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+}
+.card h2, .card h3{ margin: .2rem 0 1rem; color: var(--ink); }
+hr{ border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
+
+/* Form grid & focus states */
+.form-grid{ display:grid; grid-template-columns: repeat(2,minmax(240px,1fr)); gap: 1rem 1.25rem; }
+.form-row{ display:flex; flex-direction:column; }
+.form-row label{ font-weight:600; color: var(--muted); margin-bottom:.35rem; }
+input[type="text"], input[type="url"], input[type="date"], select, textarea{
+  padding:.65rem .75rem; border-radius:10px; border:1px solid var(--border); background:#fff;
+  outline:none; box-shadow: inset 0 1px 0 rgba(0,0,0,.02);
+}
+textarea{ min-height:180px; resize:vertical; }
+input:focus, select:focus, textarea:focus{ border-color: var(--accent); box-shadow: 0 0 0 3px rgba(202,163,83,.15); }
+
+/* Buttons palette */
+button{ appearance:none; border:none; border-radius:999px; padding:.55rem 1rem; font-weight:600; cursor:pointer; background: var(--accent); color:#fff; box-shadow: var(--shadow); }
+button:hover{ background: var(--accent-hover); }
+button.secondary{ background:#d9d2c3; color:#3a372f; }
+button.secondary:hover{ background:#cfc7b6; }
+button.danger{ background:#b9574b; }
+button.danger:hover{ background:#a4483c; }
+
+/* Table wrappers */
+.table-wrap{ overflow:auto; }
+.table{ border-collapse: collapse; width:100%; }
+.table th, .table td{ padding:.6rem .8rem; border-bottom:1px solid var(--border); }
+.table tr:hover{ background:#fffbf0; }
+
+/* Sidebar item hover */
+aside ul li a{ display:block; padding:.35rem .5rem; border-radius:8px; }
+aside ul li a:hover{ background:#fff4d8; }
+
+/* ===== Admin refined theme ===== */
+:root{
+  --bg-main: #f3efe6;
+  --panel-bg: #f5f1e8;
+  --card-bg: #faf6ec;
+  --ink: #2c2a25;
+  --muted: #5e584e;
+  --accent: #caa353;
+  --accent-hover: #b48c3f;
+  --border: #ddd2bd;
+  --border-strong: #cbbda3;
+  --shadow: 0 10px 20px rgba(92, 79, 55, .10);
+  --radius: 14px;
+}
+main, #content{
+  background: var(--panel-bg);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem 1.2rem;
+}
+.card{
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 1.1rem 1.25rem;
+  margin: 1rem 0 1.25rem;
+}
+.card h2, .card h3{
+  color: var(--ink);
+  margin: .2rem 0 1rem;
+}
+.form-grid{
+  display:grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 14px 16px;
+}
+.form-row{ display:flex; flex-direction:column; grid-column: span 6; }
+.form-row.wide{ grid-column: 1 / -1; }
+.form-row label{
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: .35rem;
+}
+input[type="text"], input[type="url"], input[type="date"], select, textarea{
+  padding: .65rem .75rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-strong);
+  background: #fffdf7;
+  outline: none;
+  font-size: 0.98rem;
+}
+textarea{ min-height: 220px; resize: vertical; }
+input:focus, select:focus, textarea:focus{
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(202, 163, 83, .14);
+}
+.actions{
+  display:flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding-top: .2rem;
+}
+button{
+  border: none;
+  border-radius: 999px;
+  padding: .58rem 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: var(--accent);
+  color: #fff;
+  box-shadow: var(--shadow);
+}
+button:hover{ background: var(--accent-hover); }
+button.secondary{ background: #e2d9c6; color: #3a372f; }
+button.secondary:hover{ background: #d7cdb6; }
+button.danger{ background: #b9574b; }
+button.danger:hover{ background: #a4483c; }
+.table-wrap{ overflow: auto; background: #fffdf8; border: 1px solid var(--border); border-radius: 12px; }
+.table{ border-collapse: collapse; width: 100%; font-size: .98rem; }
+.table th, .table td{ padding: .7rem .85rem; border-bottom: 1px solid var(--border); }
+.table thead th{ background: #f1eadc; color: #3e3a33; text-align: left; }
+.table tbody tr:nth-child(odd){ background: #fbf7ee; }
+.table tbody tr:hover{ background: #fff6d8; }
+
+aside ul li a{
+  display:block;
+  padding:.38rem .55rem;
+  border-radius: 8px;
+}
+aside ul li a:hover{ background: #fff2cb; }
+
+/* Unified control heights */
+:root{
+  --control-h: 44px;
+}
+
+input[type="text"], input[type="url"], input[type="date"], select{
+  height: var(--control-h);
+}
+
+button{
+  min-height: var(--control-h);
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Inline form row (label + control + button) */
+.form-row.inline{ flex-direction: row; align-items: center; gap: 10px; }
+.form-row.inline > label{ margin: 0; white-space: nowrap; }
+
+/* Right-aligned action row */
+.row-end{ display:flex; justify-content:flex-end; }
+
+/* Actions cell with spacer (edit left, delete right) */
+td.actions-cell{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+td.actions-cell .spacer{ flex:1; }
+
+/* Tables full width inside cards */
+.card .table-wrap{ width:100%; }
+
+/* Label alignment consistency */
+.form-row > label,
+.card .form-row > label{
+  text-align: left !important;
+  align-self: flex-start;
+}
+
+/* Categories: inline layout tight spacing */
+.form-row.inline.tight{ flex-direction: row; align-items: center; gap: 8px; }
+.form-row.inline.tight input[type="text"]{ flex:1; }
+.form-row.inline.tight button{ min-width: 150px; }
+
+/* File input styled to match other controls */
+input[type="file"]{
+  height: var(--control-h, 44px);
+  display: inline-flex;
+  align-items: center;
+  padding: .35rem .6rem;
+  border: 1px solid var(--border-strong, #cbbda3);
+  border-radius: 10px;
+  background: #fffdf7;
+  box-sizing: border-box;
+}
+
+/* Actions cell spacing (duplicate kept for compatibility) */
+td.actions-cell{ display:flex; align-items:center; gap:12px; }
+td.actions-cell .spacer{ flex:1; }
+
+/* Uniform control sizing */
+:root{ --control-h: 44px; }
+input[type="text"], input[type="url"], input[type="date"], select, input[type="file"]{
+  height: var(--control-h);
+  width: 100%;
+  box-sizing: border-box;
+}
+button{ min-height: var(--control-h); display: inline-flex; align-items: center; justify-content: center; }
+
+/* Labels above inputs */
+.form-row > label{ text-align:left !important; align-self:flex-start; margin-bottom:.35rem; }
+
+/* Grid helpers */
+.form-row.half{ grid-column: span 6; }
+.form-row.wide{ grid-column: 1 / -1; }
+
+/* Re-assert actions cell behavior (duplicate kept) */
+td.actions-cell{ display:flex; align-items:center; gap:12px; }
+td.actions-cell .spacer{ flex:1; }
+
+/* Fixed widths for admin forms */
+:root{ --control-h: 44px; --form-max-w: 560px; }
+
+.card .form-row > label{ 
+  display:block; 
+  text-align:left; 
+  margin:0 0 .35rem 0; 
+}
+
+.card .form-row.wide > input[type="text"],
+.card .form-row.wide > input[type="url"],
+.card .form-row.wide > input[type="date"],
+.card .form-row.wide > input[type="file"],
+.card .form-row.wide > select,
+.card .form-row.half > input[type="text"],
+.card .form-row.half > select{
+  width:100%;
+  height:var(--control-h);
+  box-sizing:border-box;
+}
+
+.card .form-row.wide button,
+.card .form-row.half button{
+  min-height:var(--control-h);
+  display:inline-flex;align-items:center;justify-content:center;
+}
+
+/* Left/right aligned action clusters */
+.row-actions-left{ display:flex; gap:12px; justify-content:flex-start; }
+.row-actions-right{ display:flex; gap:12px; justify-content:flex-end; }
+
+/* Tables action cell (duplicate kept) */
+td.actions-cell{ display:flex; align-items:center; gap:12px; }
+td.actions-cell .spacer{ flex:1; }
+
+/* Fixed-width admin form layout */
+:root{
+  --control-h: 44px;
+  --form-max-w: 560px; /* align all controls to same width */
+}
+
+/* Stack fields in admin forms */
+.card .form-row{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Labels above fields */
+.card .form-row > label{
+  display:block;
+  margin: 0 0 .35rem 0;
+  text-align: left !important;
+}
+
+/* Uniform control width in admin forms */
+.card .form-row > select,
+.card .form-row > input[type="text"],
+.card .form-row > input[type="url"],
+.card .form-row > input[type="date"],
+.card .form-row > input[type="file"],
+.card .form-row > textarea{
+  width: var(--form-max-w);
+  max-width: 100%;
+  height: var(--control-h);
+  box-sizing: border-box;
+}
+
+/* Tall textarea (biography editor) */
+.card .form-row > textarea{
+  min-height: 320px; 
+  height: auto;
+}
+
+/* Buttons under fields */
+.card .form-row > button,
+.card .form-row .row-actions-left > button,
+.card .form-row .row-actions-right > button{
+  min-height: var(--control-h);
+  padding: .55rem 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Card tables occupy full width */
+.card .table-wrap{
+  width: var(--form-max-w);
+  max-width: 100%;
+}
+
+/* Paintings upload button spacing */
+#paintUploadBtn{ margin-top: .4rem; }
+
+/* Categories save button alignment */
+#saveSubBtn{ margin-top: .4rem; }
+
+/* Narrow form container helper */
+.form-narrow{
+  width: var(--form-max-w, 560px);
+  max-width: 100%;
+}
+
+/* Ensure table spans full card width (override) */
+.card .table-wrap{
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Fixed widths inside .form-narrow */
+.form-narrow .form-row > select,
+.form-narrow .form-row > input[type="text"],
+.form-narrow .form-row > input[type="url"],
+.form-narrow .form-row > input[type="date"],
+.form-narrow .form-row > input[type="file"]{
+  width: var(--form-max-w, 560px);
+  max-width: 100%;
+  height: var(--control-h, 44px);
+  box-sizing: border-box;
+}
+
+/* Buttons inside .form-narrow */
+.form-narrow .form-row > button{
+  min-height: var(--control-h, 44px);
+}
+
+/* Textareas default to full width */
+.card .form-row > textarea{
+  width: 100% !important;
+  min-height: 320px;
+  box-sizing: border-box;
+}
+
+/* Tables default to full width (override) */
+.card .table-wrap{
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Admin form width & control sizing (consolidated) */
+:root{ --form-width: 560px; --control-h: 44px; }
+
+.admin-form{ max-width: var(--form-width); width: 100%; }
+
+.admin-form .control{
+  height: var(--control-h) !important;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+.card textarea.control{
+  width: 100% !important;
+  min-height: 320px;
+  box-sizing: border-box;
+}
+
+.card .table-wrap{
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* === Admin consolidated (v14) === */
+:root{ --control-h: 44px; --form-width: 560px; }
+
+/* Narrow admin inputs */
+.admin-form{ max-width: var(--form-width); width:100%; }
+.admin-form .form-row > label{ display:block; margin:0 0 .35rem 0; text-align:left; }
+.admin-form .control{
+  width: 100% !important;
+  height: var(--control-h) !important;
+  box-sizing: border-box;
+}
+
+/* Textarea full width */
+.card textarea.control{
+  width: 100% !important;
+  min-height: 320px;
+  box-sizing: border-box;
+}
+
+/* Tables full width */
+.card .table-wrap{ width: 100% !important; max-width: 100% !important; }
+
+/* Row spacing (compact) */
+.form-row{ margin-bottom: 1rem; }
+
+/* Headline underline accent */
+.card .headline h2 {
+  color: #5a3f2a;
+  font-weight: bold;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+  margin: 0 0 1.1rem 0;
+  padding: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
+  display: inline-block;
+  position: relative;
+  margin-left: 0 !important;
+}
+
+.card .headline h2::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  height: 3px;
+  width: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #ead7ba, #d7b98b 60%, #e8d2ae);
+  opacity: .9;
+}
+
+/* Admin menu headline styling */
+#managementMenu > h2 {
+  color: #5a3f2a;
+  font-weight: bold;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+  margin-top: 4rem;
+  margin-left: 2px;
+  margin-bottom: 1.1rem;
+  background: none;
+  border: none;
+  box-shadow: none;
+  position: relative;
+}
+
+#managementMenu > h2::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  height: 3px;
+  width: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #ead7ba, #d7b98b 60%, #e8d2ae);
+  opacity: .9;
+}
+
+/* Management tiles (card look & hover) */
+.management-card{
+  background: linear-gradient(180deg, #f6efe3 0%, #efe3d0 100%);
+  border: 1px solid #d6c3a1;
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: 0 3px 0 rgba(106,78,54,0.20), 0 10px 22px rgba(0,0,0,0.06);
+  position: relative;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.management-card::before{
+  content:'';
+  position:absolute; left:0; top:0; bottom:0; width:6px;
+  border-radius:14px 0 0 14px;
+  background: linear-gradient(180deg, #7a5a3e, #6a4e36);
+  opacity:.95;
+  z-index: 2;
+}
+.management-card::after{
+  content:'';
+  position:absolute; inset: 0;
+  border-radius:14px; pointer-events:none;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.35);
+  z-index: 1;
+  clip-path: inset(0 0 0 6px round 14px);
+}
+.management-option:hover .management-card,
+.management-option:focus-visible .management-card{
+  transform: translateY(-2px);
+  box-shadow: 0 5px 0 rgba(106,78,54,0.23), 0 14px 26px rgba(0,0,0,0.10);
+  border-color: #c8b38f;
+}
+.management-card h3{
+  margin: 0;
+  color: #5a3f2a;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.management-options-container > a + a { margin-top: 0; }
+
+/* Compact spacing for admin cards */
+.card .form-grid { row-gap: 0.5rem; }
+.card .form-row { margin-bottom: 0.5rem; }
+
+/* Soft divider line */
+.soft-divider{
+  border: 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(90,63,42,0.15), rgba(90,63,42,0.08) 50%, rgba(90,63,42,0.15));
+  margin: 1.1rem 0 1.1rem 0;
+  border-radius: 1px;
+}
+
+/* Active state for nav and sidebar links */
+nav a.active { color: #e09f3e; }
+aside ul li a.active { color: #e09f3e; }
+
+/* Inline figure for galleries */
+figure{display:inline-block;}
+
+/* ===== Card & caption theming ===== */
+:root {
+  --card-bg: #fffdfa;
+  --card-shadow: 0 8px 18px rgba(0,0,0,0.08);
+  --accent: #d7682f;          /* warm orange */
+  --ink: #4b3a2d;             /* warm dark text */
+  --muted: #8a796a;
+  --chip-bg: #f5ede3;
+  --chip-border: #e2d6c8;
+}
+
+/* Admin delete button (paintings gallery) */
+#paintGallery figure .del {
+  background: linear-gradient(180deg, #e5735a, #c5533a);
+  color: #fff;
+  border: none;
+}
+
+/* Upload descriptions list (paintings) */
+.desc-list { display:flex; flex-direction:column; gap:10px; }
+.desc-row {
+  background: var(--chip-bg);
+  border: 1px solid var(--chip-border);
+  border-radius: 10px;
+  padding: 10px;
+}
+.desc-row .desc-label {
+  display:block;
+  font-size: .95rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.desc-row textarea.control {
+  background: #fffdf8;
+  border: 1px solid #e8dccd;
+  border-radius: 8px;
+  padding: 8px;
+  min-height: 80px;
+  color: var(--ink);
+}
+
+/* ===== Unified gallery (public/admin) ===== */
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.gallery figure {
+  flex: auto;
+  max-width: 340px;
+  margin: 0;
+  background: #fdf7f1;
+  border: 1px solid #eadfce;
+  border-radius: 14px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.gallery figure .media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 260px;            /* Fixed thumbnail height */
+  background: #f3efe9;
+}
+
+.gallery figure .media img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;      /* Consistent rendering */
+  display: block;
+}
+
+.gallery figure figcaption {
+  margin: 0;
+  padding: 12px 14px 14px;
+  background: #f9f1e7;      /* Soft beige caption */
+  color: #5a4632;           /* Warm brown text */
+  font-size: 0.98rem;
+  line-height: 1.35;
+  text-align: center;
+  border-top: 1px solid #e7d9c7;
+}
+
+/* Alt description list variant (admin) */
+.desc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.desc-row {
+  background: #fbf6ee;
+  border: 1px solid #eadfce;
+  border-radius: 10px;
+  padding: 10px;
+}
+.desc-row .desc-head {
+  margin-bottom: 6px;
+  color: #5a4632;
+}
+.desc-row textarea.control {
+  width: 100%;
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Delete overlay button in gallery (admin) */
+#paintGallery figure { position: relative; }
+#paintGallery figure .del {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* Table action buttons (edit/delete) */
+td.actions-cell .edit, td.actions-cell .danger.delete {
+  padding: 5px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s;
+}
+td.actions-cell .edit { background-color: #4b3e27; color: #fff; }
+td.actions-cell .danger.delete { background-color: #b23c17; color: #fff; }
+td.actions-cell .edit:hover, td.actions-cell .danger.delete:hover { opacity: .8; }
+
+/* ===== Public: Exhibitions & Links lists ===== */
+.exhibitions-list{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: .75rem;
+}
+.exhibitions-list .exh-item{
+  border: 1px solid var(--border, #e8e1d5);
+  border-radius: 12px;
+  padding: .85rem 1rem;
+  background: #fffefb;
+  box-shadow: var(--shadow, 0 6px 18px rgba(0,0,0,.05));
+}
+.exh-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-bottom: .25rem;
+}
+.exh-title{
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+.badge{
+  display: inline-block;
+  font-size: .85rem;
+  padding: .2rem .5rem;
+  border-radius: 999px;
+  background: rgba(202,163,83,.16);
+  border: 1px solid rgba(202,163,83,.45);
+}
+.exh-meta{
+  display: flex;
+  gap: .6rem;
+  flex-wrap: wrap;
+  font-size: .92rem;
+  color: var(--muted, #6b665c);
+}
+.exh-desc{ margin-top: .4rem; }
+
+.links-list{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: .75rem;
+}
+.links-list .link-item{
+  border: 1px solid var(--border, #e8e1d5);
+  border-radius: 12px;
+  padding: .85rem 1rem;
+  background: #fffefb;
+  box-shadow: var(--shadow, 0 6px 18px rgba(0,0,0,.05));
+}
+.link-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-bottom: .25rem;
+}
+.link-title{
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+.link-host{
+  font-size: .92rem;
+  color: var(--muted, #6b665c);
+}
+
+/* Highlighted badge variant */
+.badge{
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: .28rem .6rem;
+  border-radius: 999px;
+  background: #fff3cf;
+  border: 1px solid rgba(202,163,83,.7);
+  letter-spacing: .1px;
+}
+
+/* Rich text spacing inside bio card */
+.card .prose p{ margin: .7rem 0; }
+.card .prose p + p{ margin-top: .9rem; }
+.card .prose ul{ margin: .6rem 0 .9rem 1.2rem; }
+.card .prose li{ margin: .28rem 0; }
+
+/* Biography card width constraints */
+.card.bio-card{
+  max-width: 980px;        
+  margin-left: auto;
+  margin-right: auto;
+}
+.card.bio-card .prose{
+  max-width: 100%;
+}
+
+/* Load-more button styling (gallery & tables) */
+.gallery-loadmore .button {
+  border: none;
+  border-radius: 10px;
+  padding: .5rem .9rem;
+  cursor: pointer;
+  background: #e09f3e;
+  color: #fff;
+}
+.gallery-loadmore .button:hover {
+  background-color: #b48c3f;
 }

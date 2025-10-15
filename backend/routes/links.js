@@ -1,62 +1,79 @@
 const express = require('express');
 const router = express.Router();
-const Link = require('../models/link');
+const LinkItem = require('../models/linkItem');
 const auth = require('../middleware/auth');
+const validate = require('../server/middleware/validate');
+const { pagination, objectId, idParam, linkItemBody } = require('../server/validation/schemas');
+const paginate = require('../server/utils/paginate');
 
-// GET all links
-router.get('/', async (req, res) => {
-  try {
-    const links = await Link.find();
-    res.json(links);
-  } catch (err) {
-    res.status(500).json({ msg: 'Server Error' });
-  }
-});
-
-// POST a new link (protected route)
-router.post('/', auth, async (req, res) => {
-  const { url, description, category } = req.body;
-
-  if (!url || !description || !category) {
-    return res.status(400).json({ msg: 'Please include all fields' });
-  }
-
-  try {
-    const newLink = new Link({ url, description, category });
-    const link = await newLink.save();
-    res.json(link);
-  } catch (err) {
-    res.status(500).json({ msg: 'Server Error' });
-  }
-});
-
-// PUT update link (protected route)
-router.put('/:id', auth, async (req, res) => {
-  try {
-    const link = await Link.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    if (!link) {
-      return res.status(404).json({ msg: 'Link not found' });
+/**
+ * GET /
+ * List all link items (optionally filtered by subcategory).
+ * Supports pagination and sorted by creation date (newest first).
+ */
+router.get(
+  '/',
+  validate({ query: pagination.keys({ subcategory: objectId.optional() }) }),
+  async (req, res) => {
+    try {
+      const filter = {};
+      if (req.query.subcategory) filter.subcategory = req.query.subcategory;
+      const q = LinkItem.find(filter);
+      const result = await paginate(q, {
+        page: req.query.page,
+        limit: req.query.limit,
+        sort: { createdAt: -1 },
+      });
+      res.json(result);
+    } catch (e) {
+      res.status(500).json({ msg: e.message });
     }
-    res.json(link);
-  } catch (err) {
-    res.status(500).json({ msg: 'Server Error' });
+  }
+);
+
+/**
+ * POST /
+ * Create a new link item.
+ * Requires authentication and validated body.
+ */
+router.post('/', auth, validate({ body: linkItemBody }), async (req, res) => {
+  try {
+    const created = await LinkItem.create(req.body);
+    res.status(201).json(created);
+  } catch (e) {
+    res.status(400).json({ msg: e.message });
   }
 });
 
-router.delete('/:id', auth, async (req, res) => {
-  try {
-    const link = await Link.findById(req.params.id);
-    if (!link) {
-      return res.status(404).json({ msg: 'Link not found' });
+/**
+ * PUT /:id
+ * Update a link item by ID.
+ * The URL field is optional on update.
+ */
+router.put(
+  '/:id',
+  auth,
+  validate({ params: idParam, body: linkItemBody.fork(['url'], s => s.optional()) }),
+  async (req, res) => {
+    try {
+      const updated = await LinkItem.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      res.json(updated);
+    } catch (e) {
+      res.status(400).json({ msg: e.message });
     }
-    await Link.findByIdAndDelete(req.params.id);
-    res.json({ msg: 'Link removed' });
-  } catch (err) {
-    res.status(500).json({ msg: 'Server Error' });
+  }
+);
+
+/**
+ * DELETE /:id
+ * Remove a link item by ID.
+ */
+router.delete('/:id', auth, validate({ params: idParam }), async (req, res) => {
+  try {
+    await LinkItem.findByIdAndDelete(req.params.id);
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(400).json({ msg: e.message });
   }
 });
 

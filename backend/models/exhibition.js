@@ -1,10 +1,11 @@
+
 const mongoose = require('mongoose');
 
 const ExhibitionSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  date: { type: String, required: true },
-  location: { type: String, required: true },
-  category: { type: String, required: true, enum: ['Μόνιμες Εκθέσεις', 'Περιοδικές Εκθέσεις', 'Ιστορικές Εκθέσεις'] }
-});
+  location: { type: String },
+  date: { type: String },
+  subcategory: { type: mongoose.Schema.Types.ObjectId, ref: 'Subcategory', required: true, index: true }
+}, { timestamps: true });
 
 module.exports = mongoose.model('Exhibition', ExhibitionSchema);
