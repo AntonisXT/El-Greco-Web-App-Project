@@ -87,7 +87,6 @@ router.get('/', async (_req, res) => {
 /**
  * POST /
  * Create a new category (admin only).
- * Can be removed if additional categories are not desired.
  */
 router.post('/', auth, async (req, res) => {
   try {
@@ -105,10 +104,11 @@ router.post('/', auth, async (req, res) => {
 /**
  * GET /:catId/subcategories
  * Return all subcategories for a given category.
+ * Sorted by order, then creation time (chronological).
  */
 router.get('/:catId/subcategories', async (req, res) => {
   try {
-    const subs = await Subcategory.find({ category: req.params.catId }).sort({ order: 1, name: 1 });
+    const subs = await Subcategory.find({ category: req.params.catId }).sort({ order: 1, createdAt: 1 });
     res.json(subs);
   } catch (e) {
     res.status(500).json({ msg: e.message });
@@ -119,17 +119,26 @@ router.get('/:catId/subcategories', async (req, res) => {
  * POST /:catId/subcategories
  * Create a new subcategory for a specific category.
  * Generates slug automatically if not provided.
+ * Assigns order based on number of existing subcategories.
  */
 router.post('/:catId/subcategories', auth, async (req, res) => {
   try {
     const payload = { ...req.body };
+
     if (!payload.name || !payload.name.trim()) {
       return res.status(400).json({ msg: 'Subcategory name is required' });
     }
+
     if (!payload.key || !payload.key.trim()) {
       payload.key = slugifyElToKey(payload.name);
     }
+
     payload.category = req.params.catId;
+
+    // Assign order automatically based on existing count
+    const count = await Subcategory.countDocuments({ category: req.params.catId });
+    payload.order = count;
+
     const sub = await Subcategory.create(payload);
     res.json(sub);
   } catch (e) {
