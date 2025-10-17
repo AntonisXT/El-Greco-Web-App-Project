@@ -8,6 +8,7 @@ info:
     • Authentication: cookie-based (HttpOnly `access_token`) with optional Bearer token support.
     • CSRF: double-submit cookie. For POST/PUT/PATCH/DELETE include header `X-CSRF-Token` that matches `csrf_token`.
     • Auth state: `GET /auth/state` returns `{ authenticated, user? }` with HTTP 200.
+    • Session refresh: `POST /auth/refresh` renews JWT and CSRF cookies (no CSRF required).
     • Protected resources: under `/api/*` and require authentication (cookie or bearer).
 
     Uploads use `multipart/form-data`. Listing endpoints support pagination and basic text search via `q`.
@@ -113,6 +114,29 @@ paths:
                         type: string
                       role:
                         type: string
+
+  /auth/refresh:
+    post:
+      tags: [Auth]
+      summary: Refresh admin session (JWT + CSRF)
+      description: >
+        Re-issues a fresh JWT in an HttpOnly `access_token` cookie and sets a new readable `csrf_token` cookie.
+        Requires a valid session (cookieAuth). CSRF is not required for this endpoint.
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Session refreshed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /auth/logout:
     post:
@@ -616,6 +640,11 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+    csrfHeader:
+      type: apiKey
+      in: header
+      name: X-CSRF-Token
+      description: CSRF token required for state-changing endpoints (double submit cookie)
 
   parameters:
     IdParam:
