@@ -1,4 +1,4 @@
-# El Greco Art Platform v2 — Full-Stack Interactive Art Experience with Secure Admin & Modern UI
+# El Greco Art Platform v2 - Full-Stack Interactive Platform for Art Exploration & Admin Management
 
 <p align="center">
   <a href="https://github.com/AntonisXT/el-greco-art-platform/releases">
@@ -9,15 +9,15 @@
   <img src="https://img.shields.io/badge/MongoDB-Database-4ea94b?logo=mongodb&logoColor=white" alt="MongoDB">
   <img src="https://img.shields.io/github/actions/workflow/status/AntonisXT/el-greco-art-platform/ci.yml?label=Build&logo=github" alt="build status">
   <img src="https://img.shields.io/badge/Deployed%20on-Vercel-000000?logo=vercel&logoColor=white" alt="vercel">
-  <img src="https://img.shields.io/badge/License-MIT-blue" alt="license">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue" alt="license"></a>
 </p>
 
 <p align="center">
   <img src="docs/demo.gif" alt="El Greco Art Platform Demo" width="720">
 </p>
 
-> A full-stack interactive art platform dedicated to *Doménikos Theotokópoulos (El Greco)* — combining visitor exploration and secure admin management.  
-> Built with Node.js, Express, MongoDB, and Vanilla JS, featuring role-based authentication, dynamic content rendering, and a clean, responsive UI (v2).
+> A full-stack interactive platform inspired by *El Greco’s* legacy - merging artistic presentation with modern web engineering.   
+> Developed with Node.js, Express, and MongoDB, it combines secure backend engineering (JWT, CSRF, Helmet) with a dynamic, responsive frontend.
 
 ---
 
@@ -25,74 +25,57 @@
 
 - **Frontend (Vercel):** [el-greco-art-platform.vercel.app](https://el-greco-art-platform.vercel.app)
 - **Backend (Render):** [el-greco-art-platform.onrender.com](https://el-greco-art-platform.onrender.com)
-- **API Docs (Swagger):** [el-greco-art-platform.vercel.app/api/docs](https://el-greco-art-platform.vercel.app/api/docs)
+- **API Docs (Swagger):** [el-greco-art-platform.onrender.com/api/docs](https://el-greco-art-platform.onrender.com/api/docs)
+
+---
+
+## 📚 Table of Contents
+- [Overview](#-overview)
+- [Key Features](#-key-features)
+- [Tech Stack](#-tech-stack)
+- [Security & Architecture](#-security--architecture)
+- [Frontend & UI/UX](#-frontend--uiux)
+- [Public Navigation & User Experience](#-public-navigation--user-experience)
+- [Administrator Management](#-administrator-management)
+- [Project Structure](#-project-structure)
+- [Setup Instructions](#-setup-instructions)
+- [API Documentation](#-api-documentation)
+- [Testing & CI/CD](#-testing--cicd)
+- [Database Models](#-database-models)
+- [Performance & Scalability](#-performance--scalability)
+- [Screenshots](#-screenshots)
+- [Versions](#-versions)
+- [Roadmap](#-roadmap)
+- [License](#-license)
 
 ---
 
 ## 🚀 Overview
 
-Version **2.0** introduces a full redesign and refactor — with modular architecture, improved security, and a modern frontend experience.  
-The platform serves both **visitors**, who explore El Greco’s works and biography, and **administrators**, who manage and update all site content.
+The *El Greco Art Platform* is a full-stack web application that brings the artistic legacy of **Doménikos Theotokópoulos (El Greco)** into the digital era through an interactive and educational experience.  
+Designed as both an **academic and portfolio-driven project**, it combines secure backend engineering, structured data management, and a modern, responsive frontend interface.
+
+Visitors can explore curated artworks, exhibitions, and biographical narratives, while administrators manage all content through a secure and intuitive dashboard.  
+Version **2.0** introduces a complete redesign focused on **enhanced security, improved usability, and a seamless user experience** — bridging cultural heritage and modern web technology.
+
 
 ---
 
 ## ✨ Key Features
 
-### 👤 Administrator Management
-- Dedicated admin dashboard  
-- Full CRUD management for:
-  - **Paintings**, **Exhibitions**, **Biography**, **Categories/Subcategories**, and **Links**
-- Role-based access control (RBAC)
-- JWT authentication (HttpOnly cookies)
-- Instant validation, feedback, and success/error notifications
+- 🧱 **Full-Stack Architecture** — Clear separation of backend logic, database models, and frontend rendering for maintainability.  
+- 🔒 **Secure Authentication** — JWT-based admin system with HttpOnly cookies, CSRF protection, rate limiting, and server-side validation.  
+- 🧹 **Data Sanitization & Validation** — Prevents XSS and ensures integrity across all CRUD operations.  
+- ⚡ **Optimized Performance** — Server-side pagination and query optimization for large collections (paintings, exhibitions, links).  
+- 📘 **Comprehensive REST API** — Fully documented with OpenAPI 3.0 (Swagger UI).  
+- 🖥️ **Admin CMS Dashboard** — Secure interface for creating, updating, and organizing all platform content.  
+- 💡 **Responsive Frontend** — Built with Vanilla JS (ES Modules) and async data fetching for real-time UI updates.  
+- 🚀 **Automated CI/CD** — GitHub Actions for linting, testing (Jest/Supertest), and deployment to Render & Vercel.  
+
 
 ---
 
-### 🔒 Security & Architecture
-- **Authentication & Access**
-  - JWT (HttpOnly) authentication  
-  - Role-based access control (RBAC)
-- **Security Middleware**
-  - Helmet security headers (CSP)  
-  - Rate limiting for authentication endpoints  
-  - CSRF protection (double submit cookie)  
-  - Input sanitization using `sanitize-html`
-- **Validation & Error Handling**
-  - Centralized schema validation with Joi  
-  - Unified and structured API responses
-- **Architecture**
-  - Modular backend structure under `/server/`  
-  - Clear separation between routes, models, and controllers  
-  - Configurable environment system (`.env`)
-
----
-
-### 🎨 Frontend & UI/UX
-- Pure **Vanilla JS** with ES Modules (no frameworks)  
-- Responsive grid layout and minimalist design  
-- Fetch-based dynamic rendering  
-- Fully deployed on **Vercel** with API proxy integration
-
----
-
-### 🖼️ Public Navigation & User Experience
-The public-facing interface enables visitors to **explore El Greco’s works, exhibitions, and biography** through a structured and interactive layout.
-
-- **Main Menu Navigation:**  
-  The top menu includes core sections — *Biography*, *Paintings*, *Exhibitions*, and *Links*.  
-  Each selection dynamically fetches content from the backend API without reloading the page.
-
-- **Sidebar Subcategories:**  
-  Each main category includes a sidebar with **subcategories**, allowing visitors to filter and navigate artworks by theme, location, or time period.
-
-- **Dynamic Content Loading:**  
-  The interface adapts instantly based on the chosen subcategory, maintaining an immersive, gallery-like browsing experience.
-
-This design provides a smooth and elegant user experience, bridging functionality with artistic presentation.
-
----
-
-### 🧩 Tech Stack
+## 🧩 Tech Stack
 
 | Layer | Technology |
 |-------|-------------|
@@ -102,42 +85,145 @@ This design provides a smooth and elegant user experience, bridging functionalit
 | **Security** | Helmet, CSRF, sanitize-html, JWT, Rate Limiting |
 | **Testing** | Jest, Supertest |
 | **Documentation** | OpenAPI 3.0 + Swagger UI |
-| **CI/CD** | GitHub Actions + Vercel Deploy |
+| **CI/CD** | GitHub Actions |
+| **Deployment** | Render (Backend), Vercel (Frontend) |
 
 ---
 
-## 🧱 File Structure
+## 🔒 Security & Architecture
 
-```
+- **Authentication & Access**
+  - JWT authentication via HttpOnly cookies for a secure single-role admin system.
+- **Security Middleware**
+  - Helmet with a custom **Content Security Policy (CSP)**  
+  - Rate limiting for authentication routes  
+  - CSRF protection using the **double submit cookie** method  
+  - Input sanitization powered by `sanitize-html`
+- **Validation & Error Handling**
+  - Centralized schema validation with **Joi**  
+  - Unified and consistent API error responses  
+- **Architecture**
+  - Modular backend under `/server/` with clear separation of concerns  
+  - Server-side pagination helper for large datasets  
+  - Configurable environment variables via `.env`
+
+---
+
+## 🎨 Frontend & UI/UX
+- Built with **Vanilla JS (ES Modules)** — no frameworks.  
+- Responsive grid layout and minimal design.  
+- **Dynamic content rendering** through the Fetch API and modular JS components.  
+- Hosted on **Vercel**, with API proxy integration for seamless backend communication.  
+
+---
+
+## 🖼️ Public Navigation & User Experience
+
+The public interface allows visitors to **explore El Greco’s artworks, exhibitions, and biography** interactively.
+
+- **Main Menu** – Top navigation gives access to key sections: *Biography*, *Paintings*, *Exhibitions*, and *Links*, presenting El Greco’s journey in a structured way.  
+- **Sidebar Subcategories** – Each section includes thematic subcategories for intuitive browsing.  
+- **Dynamic Content Rendering** – The interface updates instantly based on user selections, maintaining a fluid, gallery-like experience. 
+
+---
+
+## 👤 Administrator Management
+
+The administrator dashboard provides complete control over all platform content, ensuring a secure and efficient content management experience.
+
+**Admin Capabilities**
+- Dedicated dashboard with secure authentication and session handling.  
+- Full **CRUD operations** for:
+  - **Paintings**, **Exhibitions**, **Biography**, **Subcategories**, and **Links**  
+- Real-time interface updates with instant validation, success, and error feedback.  
+- Structured input forms for consistent and reliable data management.  
+
+---
+
+## 🧱 Project Structure
+
+```plaintext
 el-greco-art-platform/
 │
-├─ backend/
-│   ├─ server.js
-│   ├─ models/
-│   ├─ routes/
-│   ├─ controllers/
-│   ├─ middleware/
-│   └─ scripts/
+├─ backend/                            # Express.js backend (API & security)
+│   ├─ config/                         # Database and environment configuration
+│   │   └─ db.js
+│   │
+│   ├─ middleware/                     # Custom Express middlewares
+│   │   ├─ authMiddleware.js           # JWT authentication & authorization
+│   │   ├─ csrfMiddleware.js           # CSRF protection (double submit cookie)
+│   │   ├─ errorHandler.js             # Centralized error handling
+│   │   └─ rateLimiter.js              # Login rate limiter
+│   │
+│   ├─ models/                         # Mongoose models (MongoDB collections)
+│   │   ├─ biography.js                # biographies collection
+│   │   ├─ biographySection.js         # biographysections collection
+│   │   ├─ category.js                 # categories collection
+│   │   ├─ exhibition.js               # exhibitions collection
+│   │   ├─ linkItem.js                 # linkitems collection
+│   │   ├─ painting.js                 # paintings collection
+│   │   ├─ subcategory.js              # subcategories collection
+│   │   └─ user.js                     # users collection
+│   │
+│   ├─ routes/                         # Express route controllers
+│   │   ├─ authRoutes.js               # Login / Logout / State
+│   │   ├─ categoryRoutes.js           # CRUD for categories & subcategories
+│   │   ├─ biographyRoutes.js          # CRUD for biographies
+│   │   ├─ paintingRoutes.js           # Upload & CRUD for paintings
+│   │   ├─ exhibitionRoutes.js         # CRUD for exhibitions
+│   │   ├─ linkRoutes.js               # CRUD for related links
+│   │   └─ index.js                    # Root API router
+│   │
+│   ├─ scripts/                        # Utility and seeding scripts
+│   │   └─ seed-admin.js               # Creates initial admin user
+│   │
+│   ├─ server/                         # Core backend logic & helpers
+│   │   ├─ security/                   # Security policies (Helmet, CSP)
+│   │   │   ├─ csp.js
+│   │   │   └─ index.js
+│   │   ├─ utils/                      # Helper utilities
+│   │   │   ├─ paginate.js             # Generic pagination helper
+│   │   │   ├─ slugifyElToKey.js       # Slug generator for subcategories
+│   │   │   └─ sanitizeHtml.js         # HTML sanitization
+│   │   ├─ validation/                 # Joi validation schemas
+│   │   │   ├─ schemas.js
+│   │   │   └─ validate.js
+│   │   └─ index.js                    # Exports core middlewares and setup
+│   │
+│   └─ server.js                       # Main Express application entry point
 │
-├─ frontend/
-│   ├─ index.html
-│   ├─ js/
-│   ├─ css/
-│   └─ assets/
+├─ frontend/                           # Static frontend (Vercel deployment)
+│   ├─ index.html                      # Main entry page
+│   ├─ js/                             # ES modules for UI & API communication
+│   │   ├─ app.js                      # Admin dashboard logic
+│   │   ├─ auth.js                     # JWT + CSRF handling
+│   │   ├─ fetchData.js                # API fetch utilities
+│   │   └─ text.js                     # Dynamic content rendering
+│   └─ css/                            # Stylesheets and layout
+│       └─ style.css
 │
-├─ docs/
-│   ├─ openapi.yaml
-│   ├─ demo.gif
-│   └─ screenshots/
+├─ docs/                               # Documentation & visual assets
+│   ├─ openapi.yaml                    # Full OpenAPI 3.0 specification
+│   ├─ demo.gif                        # Demo preview animation
+│   └─ screenshots/                    # UI and dashboard screenshots
 │
-├─ .env.example
-├─ package.json
-└─ README.md
+├─ .github/workflows/ci.yml            # GitHub Actions for CI (lint + test)
+├─ .env.example                        # Example environment configuration
+├─ vercel.json                         # Vercel rewrites and headers
+├─ package.json                        # Node.js dependencies & scripts
+└─ README.md                           # Project documentation
 ```
+
+### 🧭 Highlights
+- **backend/** — Modular Express.js backend with routes, middleware, models, and validation.  
+- **frontend/** — Secure, lightweight Vanilla JS interface for admin and public content.  
+- **docs/** — Full OpenAPI documentation and project visuals.  
+- **scripts/** — Automation scripts (e.g., admin seeding).  
+- **CI/CD** — GitHub Actions + Vercel ensure continuous integration and deployment.
 
 ---
 
-## 📦 Local Setup
+## 💻 Setup Instructions
 
 ### 1. Clone & Install
 ```bash
@@ -149,7 +235,7 @@ npm install
 ### 2. Configure Environment
 ```bash
 cp .env.example .env
-# Add values for MONGO_URI, JWT_SECRET, FRONTEND_ORIGIN, etc.
+# Add MONGO_URI, JWT_SECRET, FRONTEND_ORIGIN, etc.
 ```
 
 ### 3. Seed Admin User
@@ -165,33 +251,77 @@ npm run dev
 ### 5. Serve Frontend (optional)
 ```bash
 npx serve ../frontend
+
+> When serving the frontend locally, ensure `FRONTEND_ORIGIN` in `.env` matches your local URL (e.g. `http://localhost:5500`), otherwise CORS or CSRF may block requests.
+
 ```
 
 ---
 
 ## 🧠 API Documentation
-
-Full OpenAPI specification is available under:
+Full OpenAPI spec is available at:
 - [`docs/openapi.yaml`](docs/openapi.yaml)
-- [Swagger UI → API Docs](https://el-greco-art-platform.vercel.app/api/docs)
+- [Swagger UI → API Docs](https://el-greco-art-platform.onrender.com/api/docs)
+
+---
+
+## 🧪 Testing & CI/CD
+- **Testing:** Implemented with Jest & Supertest for API validation and endpoint smoke tests.  
+- **Continuous Integration:** GitHub Actions workflow runs linting, testing, and build checks on each commit.  
+- **Continuous Deployment:** Automated deployment to **Vercel** (frontend) and **Render** (backend), ensuring smooth integration and delivery.  
+- **Node.js Version:** Recommended Node.js 20+ for full compatibility with CI environments.
+
+---
+
+## 🗄️ Database Models
+
+| Collection | Description | Primary Fields |
+|-------------|-------------|----------------|
+| **biographies** | Stores rich text (HTML) biographical content | `title`, `content`, `updatedAt` |
+| **biographysections** | Internal structure for detailed biography segmentation | `title`, `order`, `content` |
+| **categories** | Defines the main thematic structure of artworks | `name`, `key`, `description` |
+| **subcategories** | Organizes categories into detailed thematic areas | `name`, `category`, `key` |
+| **paintings** | Artwork metadata & image buffer | `title`, `year`, `subcategory`, `imageData`, `mimeType` |
+| **exhibitions** | Title, date, location & description of exhibitions | `title`, `location`, `date`, `description` |
+| **linkitems** | Related external links and resources | `title`, `url`, `description` |
+| **users** | Admin credentials and roles | `username`, `passwordHash`, `role` |
+
+---
+
+## ⚡ Performance & Scalability
+
+- Pagination implemented for large collections using a reusable helper.  
+- Image uploads limited to 10MB per file to maintain stability.  
+- `.lean()` queries used for faster read operations in MongoDB.  
+- Future plan: migrate image storage to cloud object storage (e.g., S3 or Supabase) for better scalability.  
 
 ---
 
 ## 📸 Screenshots
 
-### 🏛️ Public View
-| Biography | Paintings | Exhibitions |
-|------------|------------|-------------|
-| ![Biography](docs/screenshots/public-biography.jpg) | ![Paintings](docs/screenshots/public-paintings.jpg) | ![Exhibitions](docs/screenshots/public-exhibitions.jpg) |
+#### 🏛️ Public View
+| Biography | Paintings |
+|------------|------------|
+| ![Biography](docs/screenshots/public-biography.jpg) | ![Paintings](docs/screenshots/public-paintings.jpg) |
 
-### ⚙️ Admin Panel
-| Dashboard | Manage Subcategories | Edit Biography |
-|------------|----------------------|----------------|
-| ![Admin](docs/screenshots/admin-dashboard.jpg) | ![Subcategories](docs/screenshots/crud-subcategory.jpg) | ![Biography Edit](docs/screenshots/biography-edit.jpg) |
+| Exhibitions | Links |
+|--------------|--------|
+| ![Exhibitions](docs/screenshots/public-exhibitions.jpg) | ![Links](docs/screenshots/public-links.jpg) |
 
-| Manage Paintings | Manage Exhibitions | Manage Links |
-|------------------|--------------------|---------------|
-| ![Paintings Manage](docs/screenshots/paintings-manage.jpg) | ![Exhibitions Manage](docs/screenshots/exhibitions-manage.jpg) | ![Links Manage](docs/screenshots/links-manage.jpg) |
+---
+
+#### ⚙️ Admin Panel
+| Login | Manage Subcategories |
+|------------|----------------------|
+| ![Dashboard](docs/screenshots/admin-dashboard.jpg) | ![Subcategories](docs/screenshots/crud-subcategory.jpg) |
+
+| Edit Biography | Manage Paintings |
+|----------------|------------------|
+| ![Biography Edit](docs/screenshots/biography-edit.jpg) | ![Paintings Manage](docs/screenshots/paintings-manage.jpg) |
+
+| Manage Exhibitions | Manage Links |
+|--------------------|---------------|
+| ![Exhibitions Manage](docs/screenshots/exhibitions-manage.jpg) | ![Links Manage](docs/screenshots/links-manage.jpg) |
 
 ---
 
@@ -200,28 +330,42 @@ Full OpenAPI specification is available under:
 | Version | Highlights |
 |----------|-------------|
 | **v1.0** | LocalStorage-based admin, CRUD only for exhibitions & links, minimal UI |
-| **v2.0 (current)** | Major refactor with modular backend, role-based authentication, expanded data models, complete admin dashboard, enhanced security layers, and redesigned responsive UI/UX |
+| **v2.0 (current)** 🟢 | Major refactor with modular backend, Single-role admin authentication (JWT-based), expanded data models, complete admin dashboard, enhanced security layers, and redesigned responsive UI/UX |
 
 > 🏷️ [View Release Notes → v2.0.0](https://github.com/AntonisXT/el-greco-art-platform/releases/tag/v2.0.0)
 
 ---
 
-## 📈 Roadmap
+### 🚀 Roadmap
 
-- [ ] 🌍 Add bilingual support (Greek / English)  
-- [ ] ☁️ Migrate image storage to cloud (AWS S3 / Supabase)  
-- [ ] 🧠 Integrate AI-based artwork recognition & classification  
-- [ ] 📱 Refine responsive layout for mobile and tablet  
-- [ ] 🔔 Implement real-time admin notifications (WebSocket)  
-- [ ] 🧪 Expand Jest test coverage (unit & integration)  
-- [ ] 💡 Add system health monitoring endpoint (`/healthz`)  
-- [ ] 🌙 Introduce dark mode toggle  
+#### 🖥️ UI & UX
+- [ ] Improve mobile responsiveness  
+- [ ] Add dark mode  
+- [ ] Add Greek / English Localization
+
+#### ⚙️ Backend & Performance
+- [ ] Image preview & lazy loading  
+- [ ] Migrate image storage to cloud (S3/Supabase)  
+- [ ] Add compression & caching headers  
+- [ ] Full-text search functionality
+
+#### 🧠 Features & Intelligence
+- [ ] AI artwork tagging  
+- [ ] Add analytics dashboard  
+
+#### 🔒 Security & Roles
+- [ ] Multi-admin roles & permissions  
+- [ ] Expand automated testing coverage  
 
 ---
 
 ## 📜 License
-MIT License © 2025 [AntonisXT](https://github.com/AntonisXT)
+[MIT License](LICENSE) © 2025 [AntonisXT](https://github.com/AntonisXT)
 
 ---
 
-<p align="center">Built with ❤️ by <a href="https://github.com/AntonisXT">AntonisXT</a></p>
+<p align="center">Built with ❤️ by <a href="https://github.com/AntonisXT">AntonisXT</a> — A portfolio and learning showcase project.</p>
+
+---
+
+**Keywords:** El Greco, Node.js, Express, MongoDB, Full Stack Project, Art Platform, Portfolio, Security, REST API, CSRF, Helmet, Vercel, Render
