@@ -59,40 +59,63 @@ async function isLoggedIn() {
  * - Strips any Authorization header (cookie-based auth only).
  * - Throws on non-OK responses; logs out and alerts on 401.
  */
-async function fetchWithAuth(url, options = {}) {
-  const opts = { ...options };
-  opts.credentials = 'include';
-
-  // Build headers safely
-  const h = new Headers(opts.headers || {});
+async function fetchWithAuth(input, init = {}) {
+  // Read CSRF token from cookie
   const csrf = getCsrfTokenFromCookie();
-  if (csrf) h.set('X-CSRF-Token', csrf);
 
-  // JSON body handling (skip for FormData)
-  if (opts.body && !(opts.body instanceof FormData)) {
-    if (typeof opts.body !== 'string') opts.body = JSON.stringify(opts.body);
-    if (!h.has('Content-Type')) h.set('Content-Type', 'application/json');
+  // Build the final request configuration
+  const finalInit = {
+    ...init,
+    credentials: 'include', // include cookies (JWT + CSRF)
+    headers: {
+      ...(init.headers || {}),
+      ...(csrf ? { 'X-CSRF-Token': csrf } : {})
+    }
+  };
+
+  // Helper function to perform the fetch
+  const doFetch = () => fetch(input, finalInit);
+
+  // First attempt
+  let response = await doFetch();
+
+  // If unauthorized or CSRF token expired, try to refresh and retry once
+  if (response.status === 401 || response.status === 403) {
+    try {
+      const r = await fetch('/auth/refresh', { method: 'POST', credentials: 'include' });
+      if (r.ok) {
+        // Update CSRF header with the new token from cookies
+        const newCsrf = getCsrfTokenFromCookie();
+        finalInit.headers = {
+          ...(finalInit.headers || {}),
+          ...(newCsrf ? { 'X-CSRF-Token': newCsrf } : {})
+        };
+        // Retry the original request once
+        response = await doFetch();
+      }
+    } catch (_) {
+      // Ignore errors during refresh attempt
+    }
   }
 
-  // Enforce cookie-based auth
-  h.delete('Authorization');
-  opts.headers = h;
-
-  const response = await fetch(url, opts);
-
+  // If still unauthorized, force logout and alert the user
   if (response.status === 401) {
-    try { await logout(); } catch {}
-    alert('Η σύνδεση έληξε, παρακαλώ ξανασυνδεθείτε.');
+    alert('Session expired. Please log in again.');
     throw new Error('Unauthorized');
   }
 
+  // If the response is not OK, throw a descriptive error
   if (!response.ok) {
     let err;
-    try { err = await response.json(); }
-    catch { err = { message: await response.text().catch(()=>'Request failed') }; }
+    try {
+      err = await response.json();
+    } catch {
+      err = { message: await response.text().catch(() => 'Request failed') };
+    }
     throw new Error(JSON.stringify(err));
   }
 
+  // Return the successful response
   return response;
 }
 
