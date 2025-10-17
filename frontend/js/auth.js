@@ -59,63 +59,63 @@ async function isLoggedIn() {
  * - Strips any Authorization header (cookie-based auth only).
  * - Throws on non-OK responses; logs out and alerts on 401.
  */
-async function fetchWithAuth(input, init = {}) {
-  // Read CSRF token from cookie
+async function fetchWithAuth(url, options = {}) {
+  const opts = { ...options };
+  opts.credentials = 'include';
+
+  // Build headers safely
+  const headers = new Headers(opts.headers || {});
   const csrf = getCsrfTokenFromCookie();
+  if (csrf) headers.set('X-CSRF-Token', csrf);
 
-  // Build the final request configuration
-  const finalInit = {
-    ...init,
-    credentials: 'include', // include cookies (JWT + CSRF)
-    headers: {
-      ...(init.headers || {}),
-      ...(csrf ? { 'X-CSRF-Token': csrf } : {})
-    }
-  };
+  // JSON body handling (skip for FormData)
+  const isFormData = (typeof FormData !== 'undefined') && (opts.body instanceof FormData);
+  if (opts.body && !isFormData) {
+    if (typeof opts.body !== 'string') opts.body = JSON.stringify(opts.body);
+    if (!headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
+  }
 
-  // Helper function to perform the fetch
-  const doFetch = () => fetch(input, finalInit);
+  // Enforce cookie-based auth
+  headers.delete('Authorization');
+  opts.headers = headers;
 
-  // First attempt
+  const doFetch = () => fetch(url, opts);
+
   let response = await doFetch();
 
-  // If unauthorized or CSRF token expired, try to refresh and retry once
+  // If unauthorized/forbidden, try to refresh and retry once
   if (response.status === 401 || response.status === 403) {
     try {
       const r = await fetch('/auth/refresh', { method: 'POST', credentials: 'include' });
       if (r.ok) {
-        // Update CSRF header with the new token from cookies
+        // Rebuild headers to inject the fresh CSRF token without losing existing ones
+        const refreshedHeaders = new Headers(opts.headers || {});
         const newCsrf = getCsrfTokenFromCookie();
-        finalInit.headers = {
-          ...(finalInit.headers || {}),
-          ...(newCsrf ? { 'X-CSRF-Token': newCsrf } : {})
-        };
-        // Retry the original request once
+        if (newCsrf) refreshedHeaders.set('X-CSRF-Token', newCsrf);
+        // Keep Content-Type if it was set for JSON; keep all other custom headers
+        opts.headers = refreshedHeaders;
+
+        // Retry original request (opts.body is unchanged)
         response = await doFetch();
       }
     } catch (_) {
-      // Ignore errors during refresh attempt
+      // Ignore refresh errors; proceed to normal error handling below
     }
   }
 
-  // If still unauthorized, force logout and alert the user
   if (response.status === 401) {
-    alert('Session expired. Please log in again.');
+    try { logout(); } catch {}
+    alert('Η σύνδεση έληξε, παρακαλώ ξανασυνδεθείτε.');
     throw new Error('Unauthorized');
   }
 
-  // If the response is not OK, throw a descriptive error
   if (!response.ok) {
     let err;
-    try {
-      err = await response.json();
-    } catch {
-      err = { message: await response.text().catch(() => 'Request failed') };
-    }
+    try { err = await response.json(); }
+    catch { err = { message: await response.text().catch(() => 'Request failed') }; }
     throw new Error(JSON.stringify(err));
   }
 
-  // Return the successful response
   return response;
 }
 
