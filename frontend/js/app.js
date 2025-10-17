@@ -143,9 +143,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const logoutButton = document.getElementById('logoutButton');
   logoutButton.addEventListener('click', () => {
     logout(); // clean server-side cookies
-    try { localStorage.setItem('activeSection','biography'); } catch(_) {}
-    const bioLink = document.querySelector('nav a[data-section="biography"]');
-    if (bioLink) bioLink.click();
+    try { localStorage.setItem('activeSection','management'); } catch(_) {}
+    const mgmtLink = document.querySelector('nav a[data-section="management"]');
+    if (mgmtLink) mgmtLink.click();
     loginFormContainer.classList.remove('hidden');
     loggedInContainer.classList.add('hidden');
     managementMenu.classList.remove('visible');
