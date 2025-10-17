@@ -13,6 +13,7 @@ const DEFAULT_WHITELIST = [
   /^\/auth\/login$/,
   /^\/auth\/logout$/,
   /^\/auth\/check$/,
+  /^\/auth\/refresh$/,
   /^\/api\/docs(\/.*)?$/,
   /^\/openapi\.json$/,
   /^\/favicon\.ico$/,
