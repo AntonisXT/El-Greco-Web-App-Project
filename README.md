@@ -16,8 +16,8 @@
   <img src="docs/demo.gif" alt="El Greco Art Platform Demo" width="720">
 </p>
 
-> A full-stack interactive platform inspired by *El Greco’s* legacy - merging artistic presentation with modern web engineering.   
-> Developed with Node.js, Express, and MongoDB, it combines secure backend engineering (JWT, CSRF, Helmet) with a dynamic, responsive frontend.
+> A full-stack interactive platform inspired by El Greco’s legacy — merging artistic presentation with modern web engineering.  
+> Built with Node.js, Express, and MongoDB, it unites secure backend design (JWT, CSRF, Helmet) with a dynamic and responsive frontend experience.
 
 ---
 
