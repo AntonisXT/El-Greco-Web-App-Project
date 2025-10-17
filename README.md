@@ -172,7 +172,7 @@ The administrator dashboard provides complete control over all platform content,
 ```plaintext
 el-greco-art-platform/
 │
-├─ backend/                            # Express.js backend (API & security)
+├─ backend/                            # Express.js backend (API, security, validation)
 │   ├─ config/                         # Database and environment configuration
 │   │   └─ db.js
 │   │
@@ -183,19 +183,19 @@ el-greco-art-platform/
 │   │   └─ rateLimiter.js              # Login rate limiter
 │   │
 │   ├─ models/                         # Mongoose models (MongoDB collections)
-│   │   ├─ biography.js                # biographies collection
-│   │   ├─ biographySection.js         # biographysections collection
-│   │   ├─ category.js                 # categories collection
-│   │   ├─ exhibition.js               # exhibitions collection
-│   │   ├─ linkItem.js                 # linkitems collection
-│   │   ├─ painting.js                 # paintings collection
-│   │   ├─ subcategory.js              # subcategories collection
-│   │   └─ user.js                     # users collection
+│   │   ├─ biography.js
+│   │   ├─ biographySection.js
+│   │   ├─ category.js
+│   │   ├─ exhibition.js
+│   │   ├─ linkItem.js
+│   │   ├─ painting.js
+│   │   ├─ subcategory.js
+│   │   └─ user.js
 │   │
 │   ├─ routes/                         # Express route controllers
-│   │   ├─ authRoutes.js               # Login / Logout / State
+│   │   ├─ authRoutes.js               # Login / Logout / Check / Refresh
 │   │   ├─ categoryRoutes.js           # CRUD for categories & subcategories
-│   │   ├─ biographyRoutes.js          # CRUD for biographies
+│   │   ├─ biographyRoutes.js          # CRUD for biography sections
 │   │   ├─ paintingRoutes.js           # Upload & CRUD for paintings
 │   │   ├─ exhibitionRoutes.js         # CRUD for exhibitions
 │   │   ├─ linkRoutes.js               # CRUD for related links
@@ -222,8 +222,8 @@ el-greco-art-platform/
 ├─ frontend/                           # Static frontend (Vercel deployment)
 │   ├─ index.html                      # Main entry page
 │   ├─ js/                             # ES modules for UI & API communication
-│   │   ├─ app.js                      # Admin dashboard logic
-│   │   ├─ auth.js                     # JWT + CSRF handling
+│   │   ├─ app.js                      # Dashboard and UI logic
+│   │   ├─ auth.js                     # JWT, CSRF & session refresh handling
 │   │   ├─ fetchData.js                # API fetch utilities
 │   │   └─ text.js                     # Dynamic content rendering
 │   └─ css/                            # Stylesheets and layout
@@ -242,11 +242,11 @@ el-greco-art-platform/
 ```
 
 ### 🧭 Highlights
-- **backend/** — Modular Express.js backend with routes, middleware, models, and validation.  
+- **backend/** — Modular Express.js backend with routes, middleware, models, validation, and security logic. 
 - **frontend/** — Secure, lightweight Vanilla JS interface for admin and public content.  
 - **docs/** — Full OpenAPI documentation and project visuals.  
 - **scripts/** — Automation scripts (e.g., admin seeding).  
-- **CI/CD** — GitHub Actions + Vercel ensure continuous integration and deployment.
+- **CI/CD** — GitHub Actions, Render, and Vercel integration for automated testing and deployment.
 
 ---
 
