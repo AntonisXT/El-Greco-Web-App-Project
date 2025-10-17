@@ -42,7 +42,7 @@ router.post('/login', loginLimiter, validate({ body: loginBody }), async (req, r
       sameSite: process.env.COOKIE_SAMESITE || 'None',
       path: '/',
       domain: process.env.COOKIE_DOMAIN || undefined,
-      maxAge: 15 * 60 * 1000
+      maxAge: 8 * 60 * 60 * 1000
     });
 
     // CSRF token (readable by frontend)
@@ -53,7 +53,7 @@ router.post('/login', loginLimiter, validate({ body: loginBody }), async (req, r
       sameSite: process.env.COOKIE_SAMESITE || 'None',
       path: '/',
       domain: process.env.COOKIE_DOMAIN || undefined,
-      maxAge: 15 * 60 * 1000
+      maxAge: 8 * 60 * 60 * 1000
     });
 
     return res.json({ ok: true, user: { username: user.username, role: user.role } });
@@ -98,6 +98,42 @@ router.get('/check', auth, (req, res) => {
     ok: true,
     user: { id: req.user.sub, username: req.user.username, role: req.user.role }
   });
+});
+
+/**
+ * POST /auth/refresh
+ * - Re-issues a fresh JWT access_token (HttpOnly) and a new CSRF token.
+ * - Extends both tokens' lifetimes to 8 hours without requiring full re-login.
+ */
+router.post('/refresh', auth, (req, res) => {
+  const jwt = require('jsonwebtoken');
+  const crypto = require('crypto');
+
+  const payload = {
+    sub: req.user.sub,
+    username: req.user.username,
+    role: req.user.role
+  };
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '8h' });
+
+  const base = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.COOKIE_SAMESITE || 'None',
+    path: '/',
+    domain: process.env.COOKIE_DOMAIN || undefined,
+    maxAge: 8 * 60 * 60 * 1000
+  };
+
+  res.cookie('access_token', token, base);
+
+  const csrfToken = crypto.randomBytes(16).toString('hex');
+  res.cookie('csrf_token', csrfToken, {
+    ...base,
+    httpOnly: false
+  });
+
+  return res.json({ ok: true });
 });
 
 /**
