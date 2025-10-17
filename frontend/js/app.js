@@ -115,9 +115,9 @@ document.addEventListener('DOMContentLoaded', () => {
     loggedInContainer.classList.remove('hidden');
     managementMenu.classList.add('visible');
   
-      try { localStorage.setItem('activeSection','management'); } catch(_) {}
-      const mgmtLink = document.querySelector('nav a[data-section="management"]');
-      if (mgmtLink) mgmtLink.click();
+      try { localStorage.setItem('activeSection','biography'); } catch(_) {}
+      const bioLink = document.querySelector('nav a[data-section="biography"]');
+      if (bioLink) bioLink.click();
 } else {
     loginFormContainer.classList.remove('hidden');
     loggedInContainer.classList.add('hidden');
@@ -142,13 +142,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Handle logout
   const logoutButton = document.getElementById('logoutButton');
   logoutButton.addEventListener('click', () => {
-    logout();
-    try { localStorage.setItem('activeSection','management'); } catch(_) {}
-    const mgmtLink = document.querySelector('nav a[data-section="management"]');
-    if (mgmtLink) mgmtLink.click();
-    loginFormContainer.classList.add('hidden');
-    loggedInContainer.classList.add('hidden');
-    managementMenu.classList.remove('visible');
+  await logout(); // clean server-side cookies
+  try { localStorage.setItem('activeSection','biography'); } catch(_) {}
+  const bioLink = document.querySelector('nav a[data-section="biography"]');
+  if (bioLink) bioLink.click();
+  loginFormContainer.classList.remove('hidden');
+  loggedInContainer.classList.add('hidden');
+  managementMenu.classList.remove('visible');
   });
 
   // Top nav: swap main/aside sections based on selected tab
