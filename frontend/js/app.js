@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Handle logout
   const logoutButton = document.getElementById('logoutButton');
   logoutButton.addEventListener('click', () => {
-    await logout(); // clean server-side cookies
+    logout(); // clean server-side cookies
     try { localStorage.setItem('activeSection','biography'); } catch(_) {}
     const bioLink = document.querySelector('nav a[data-section="biography"]');
     if (bioLink) bioLink.click();
