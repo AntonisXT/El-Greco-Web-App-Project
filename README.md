@@ -33,8 +33,8 @@
 - [Overview](#-overview)
 - [Key Features](#-key-features)
 - [Tech Stack](#-tech-stack)
-- [Security & Architecture](#-security--architecture)
-- [Frontend & UI/UX](#-frontend--uiux)
+- [Security](#-security)
+- [Architecture](#-architecture)
 - [Public Navigation & User Experience](#-public-navigation--user-experience)
 - [Administrator Management](#-administrator-management)
 - [Project Structure](#-project-structure)
@@ -46,6 +46,7 @@
 - [Screenshots](#-screenshots)
 - [Versions](#-versions)
 - [Roadmap](#-roadmap)
+- [Contributing](#-contributing)
 - [License](#-license)
 
 ---
@@ -72,7 +73,6 @@ Version **2.0** introduces a complete redesign focused on **enhanced security, i
 - 💡 **Responsive Frontend** — Built with Vanilla JS (ES Modules) and async data fetching for real-time UI updates.  
 - 🚀 **Automated CI/CD** — GitHub Actions for linting, testing (Jest/Supertest), and deployment to Render & Vercel.  
 
-
 ---
 
 ## 🧩 Tech Stack
@@ -90,30 +90,57 @@ Version **2.0** introduces a complete redesign focused on **enhanced security, i
 
 ---
 
-## 🔒 Security & Architecture
+## 🔒 Security
 
 - **Authentication & Access**
-  - JWT authentication via HttpOnly cookies for a secure single-role admin system.
+  - JWT authentication via HttpOnly cookies for a secure single-role admin system.  
+  - Session refresh mechanism automatically renews JWT and CSRF tokens every 8 hours for long-lived sessions.  
+
 - **Security Middleware**
-  - Helmet with a custom **Content Security Policy (CSP)**  
-  - Rate limiting for authentication routes  
-  - CSRF protection using the **double submit cookie** method  
-  - Input sanitization powered by `sanitize-html`
+  - Helmet with a custom **Content Security Policy (CSP)** to prevent XSS and clickjacking attacks.  
+  - Rate limiting for authentication routes and brute-force protection.  
+  - CSRF protection using the **double submit cookie** method.  
+  - Input sanitization powered by `sanitize-html` for safe user-managed content.  
+
 - **Validation & Error Handling**
-  - Centralized schema validation with **Joi**  
-  - Unified and consistent API error responses  
-- **Architecture**
-  - Modular backend under `/server/` with clear separation of concerns  
-  - Server-side pagination helper for large datasets  
-  - Configurable environment variables via `.env`
+  - Centralized request validation with **Joi** for consistent schema enforcement.  
+  - Unified and secure API error responses for predictable client behavior.  
+
+- **Cookie & CORS Configuration**
+  - Secure cookie attributes (`HttpOnly`, `SameSite`, `Secure`) aligned with Render–Vercel deployment setup.  
+  - Controlled cross-origin access between frontend and backend for safe API communication.  
 
 ---
 
-## 🎨 Frontend & UI/UX
-- Built with **Vanilla JS (ES Modules)** — no frameworks.  
-- Responsive grid layout and minimal design.  
-- **Dynamic content rendering** through the Fetch API and modular JS components.  
-- Hosted on **Vercel**, with API proxy integration for seamless backend communication.  
+## 🧱 Architecture
+
+- **System Architecture**
+  - Full-stack setup connecting the **Vercel-hosted frontend**, **Render backend**, and **MongoDB Atlas** database through secure REST APIs over HTTPS.  
+  - Follows a client–server model with cookie-based authentication and stateless API design.  
+
+- **Backend Architecture**
+  - Modular **Express.js** structure with separate layers for routes, middleware, models, validation, and security.  
+  - Built for scalability and maintainability with clear separation of concerns.  
+
+- **Frontend Architecture**
+  - Lightweight **Vanilla JS (ES Modules)** interface hosted on Vercel.  
+  - Uses async API calls for dynamic data rendering and real-time content updates.  
+
+- **Database Layer**
+  - **MongoDB + Mongoose** schemas for artworks, exhibitions, biography, links, and categories.  
+  - Optimized read performance via `.lean()` queries and indexed collections.  
+
+- **API Design**
+  - RESTful endpoints with consistent CRUD patterns.  
+  - Fully documented using **OpenAPI 3.0 (Swagger UI)** for testing and integration.  
+
+- **Error Handling & Logging**
+  - Centralized error middleware provides structured and meaningful responses.  
+  - Designed for easier debugging and monitoring in production environments.  
+
+- **Scalability & Configuration**
+  - Server-side pagination and optimized queries for large datasets.  
+  - Environment-based configuration via `.env` for flexible multi-environment deployment.  
 
 ---
 
@@ -290,9 +317,11 @@ Full OpenAPI spec is available at:
 
 ## ⚡ Performance & Scalability
 
-- Pagination implemented for large collections using a reusable helper.  
+- Efficient pagination helper for large collections (paintings, exhibitions, links).
 - Image uploads limited to 10MB per file to maintain stability.  
-- `.lean()` queries used for faster read operations in MongoDB.  
+- `.lean()` queries used for faster read operations in MongoDB.
+- Session refresh mechanism implemented for automatic renewal of JWT and CSRF tokens
+- Future plan: enable caching and compression headers for improved performance.
 - Future plan: migrate image storage to cloud object storage (e.g., S3 or Supabase) for better scalability.  
 
 ---
@@ -356,6 +385,13 @@ Full OpenAPI spec is available at:
 #### 🔒 Security & Roles
 - [ ] Multi-admin roles & permissions  
 - [ ] Expand automated testing coverage  
+
+---
+
+## 🤝 Contributing
+
+This project was developed as a personal academic and portfolio project.  
+Contributions, bug reports, or feature suggestions are welcome via GitHub issues or pull requests.
 
 ---
 
